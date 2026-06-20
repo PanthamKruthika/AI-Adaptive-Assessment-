@@ -1,0 +1,424 @@
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── Page shell ──────────────────────────────────────────────────────────── */
+.assessment-selection-page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background: #0a0b1e;
+}
+
+/* ── Background layers ───────────────────────────────────────────────────── */
+.assessment-selection-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  /* backgroundImage is set inline in JSX — static import resolved at build time */
+}
+
+.assessment-selection-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.68);
+  z-index: 1;
+}
+
+/* ── Navbar wrapper ──────────────────────────────────────────────────────── */
+.assessment-selection-navbar-wrap {
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Content area ────────────────────────────────────────────────────────── */
+.assessment-selection-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 100px 20px 60px;
+}
+
+/* ── Title ───────────────────────────────────────────────────────────────── */
+.assessment-selection-title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  margin-bottom: 30px;
+  color: rgb(234, 228, 213);
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Error box ───────────────────────────────────────────────────────────── */
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ff7c7c;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  background: rgba(255, 80, 80, 0.08);
+  border: 1px solid rgba(255, 120, 120, 0.22);
+  padding: 12px 16px;
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.retry-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #ff7c7c;
+  background: transparent;
+  color: #ff7c7c;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.retry-btn:hover {
+  background: rgba(255, 124, 124, 0.08);
+}
+
+.retry-btn:focus-visible {
+  outline: 2px solid rgba(255, 124, 124, 0.7);
+  outline-offset: 3px;
+}
+
+/* ── Info text ───────────────────────────────────────────────────────────── */
+.info-text {
+  color: rgba(234, 228, 213, 0.62);
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+/* ── Topic pills ─────────────────────────────────────────────────────────── */
+.topic-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 48px;
+  max-width: 900px;
+}
+
+.topic-pill {
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgb(234, 228, 213);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.topic-pill:hover {
+  background: rgba(113, 116, 170, 0.22);
+  border-color: rgba(113, 116, 170, 0.55);
+  transform: translateY(-1px);
+}
+
+.topic-pill.active {
+  background: linear-gradient(
+    135deg,
+    rgba(113, 116, 170, 0.88),
+    rgba(130, 133, 188, 0.72)
+  );
+  border-color: rgba(255, 255, 255, 0.16);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 8px 22px rgba(113, 116, 170, 0.35);
+}
+
+.topic-pill:focus-visible {
+  outline: 2px solid rgba(113, 116, 170, 0.8);
+  outline-offset: 3px;
+}
+
+/* ── Cards grid ──────────────────────────────────────────────────────────── */
+.cards-grid {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* ── Flip card ───────────────────────────────────────────────────────────── */
+.flip-card {
+  width: 280px;
+  height: 230px;
+  perspective: 1000px;
+  animation: fadeSlideUp 0.45s ease both;
+  /* Hover lift only when NOT flipped — see .flip-card:not(.flipped):hover below */
+  transition: transform 0.25s ease;
+}
+
+/* Lift only the un-flipped card — prevents double-transform conflict */
+.flip-card:not(.flipped):hover {
+  transform: translateY(-6px);
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 22px;
+  box-sizing: border-box;
+  overflow: hidden;
+  gap: 14px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(113, 116, 170, 0.55),
+    rgba(60, 65, 140, 0.25)
+  );
+  border: 1px solid rgba(140, 145, 220, 0.6);
+
+  backdrop-filter: blur(26px) saturate(200%);
+  -webkit-backdrop-filter: blur(26px) saturate(200%);
+
+  box-shadow:
+    0 18px 50px rgba(113, 116, 170, 0.45),
+    0 10px 35px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Shimmer highlight — clipped by overflow:hidden on parent */
+.flip-card-front::before,
+.flip-card-back::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 180%;
+  height: 55%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.flip-card-front {
+  cursor: pointer;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(
+    135deg,
+    rgba(113, 116, 170, 0.75),
+    rgba(80, 85, 160, 0.35)
+  );
+  box-shadow:
+    0 22px 60px rgba(113, 116, 170, 0.6),
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Intensify shadow on hover — only fires when card is not flipped (see above) */
+.flip-card:not(.flipped):hover .flip-card-front {
+  box-shadow:
+    0 25px 70px rgba(113, 116, 170, 0.7),
+    0 15px 45px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Card typography ─────────────────────────────────────────────────────── */
+.card-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: rgba(230, 233, 255, 0.68);
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(140, 145, 220, 0.3);
+}
+
+.card-topic-name {
+  font-size: 0.94rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  text-align: center;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.card-hint {
+  font-size: 0.72rem;
+  color: rgba(234, 228, 213, 0.52);
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-back-label {
+  font-size: 0.68rem;
+  color: rgba(234, 228, 213, 0.54);
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.card-back-title {
+  font-size: 0.96rem;
+  color: #ffffff;
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  text-align: center;
+  line-height: 1.55;
+  font-weight: 600;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+/* ── Start button ────────────────────────────────────────────────────────── */
+.start-btn {
+  padding: 11px 0;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(113, 116, 170, 0.65),
+    rgba(255, 255, 255, 0.12)
+  );
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 6px 18px rgba(113, 116, 170, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.25s ease;
+}
+
+.start-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: linear-gradient(
+    135deg,
+    rgba(113, 116, 170, 0.82),
+    rgba(255, 255, 255, 0.16)
+  );
+}
+
+.start-btn:disabled {
+  background: rgba(74, 77, 122, 0.72);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.start-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 3px;
+}
+
+/* ── Back link ───────────────────────────────────────────────────────────── */
+.back-link {
+  background: none;
+  border: none;
+  color: rgba(234, 228, 213, 0.5);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-family: fangsong, STFangsong, FangSong, Georgia, serif;
+  letter-spacing: 0.08em;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: rgba(234, 228, 213, 0.85);
+}
+
+.back-link:focus-visible {
+  outline: 2px solid rgba(113, 116, 170, 0.8);
+  outline-offset: 3px;
+}
+
+/* ── Animation ───────────────────────────────────────────────────────────── */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .assessment-selection-content {
+    padding: 88px 16px 48px;
+  }
+
+  .cards-grid {
+    gap: 20px;
+  }
+
+  .flip-card {
+    width: min(100%, 320px);
+    height: 220px;
+  }
+
+  .topic-row {
+    gap: 10px;
+    margin-bottom: 34px;
+  }
+
+  .topic-pill {
+    font-size: 0.88rem;
+    padding: 9px 18px;
+  }
+
+  .error-box {
+    flex-direction: column;
+  }
+}

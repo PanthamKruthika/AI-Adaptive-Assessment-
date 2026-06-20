@@ -1,0 +1,232 @@
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Page Layout ─────────────────────────────────────────────────────────── */
+.assessment-page {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.assessment-page--centered {
+  align-items: center;
+  flex-direction: column;
+}
+
+.assessment-page--top {
+  align-items: flex-start;
+}
+
+/* ── Container ───────────────────────────────────────────────────────────── */
+.assessment-container {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.assessment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.question-counter {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+}
+
+/* ── Question Card ───────────────────────────────────────────────────────── */
+.question-card {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(113, 116, 170, 0.3);
+  position: relative;
+}
+
+.question-card--centered {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.question-text {
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+/* ── Options ─────────────────────────────────────────────────────────────── */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.option-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: rgba(113, 116, 170, 0.2);
+  border-color: #7174aa;
+}
+
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.option-btn.selected {
+  background: rgba(113, 116, 170, 0.3);
+  border: 2px solid #7174aa;
+}
+
+.option-label {
+  background: rgba(255, 255, 255, 0.1);
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.assessment-footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.assessment-footer--end {
+  justify-content: flex-end;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn-primary {
+  background: #7174aa;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #5a5d8f;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+}
+
+/* ── Error Banner ────────────────────────────────────────────────────────── */
+.error-banner {
+  background: rgba(255, 77, 77, 0.2);
+  color: #ff4d4d;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ff4d4d;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ── Completion Screen ───────────────────────────────────────────────────── */
+.completion-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.completion-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.score-value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.score-percent {
+  font-size: 1.3rem;
+  color: #7174aa;
+  font-weight: 600;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .assessment-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .score-value {
+    font-size: 2.8rem;
+  }
+
+  .completion-title {
+    font-size: 1.8rem;
+  }
+}
