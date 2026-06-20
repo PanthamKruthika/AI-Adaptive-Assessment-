@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class StartAssessmentView(APIView):
-    permission_classess = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
 
         user = request.user
@@ -51,13 +51,23 @@ class SubmitAnswerView(APIView):
         correct = 1 if selected == question.answer else 0
 
         # scoring
+        if question.difficulty == "easy":
+            marks = 1
+
+        elif question.difficulty == "medium":
+            marks = 2
+
+        else:
+            marks = 3
+
+
+        # total possible marks
+        session.total_marks += marks
+
+
+        # obtained marks
         if correct:
-            if question.difficulty == "easy":
-                session.score += 1
-            elif question.difficulty == "medium":
-                session.score += 2
-            else:
-                session.score += 3
+            session.score += marks
 
         # ML prediction
         next_difficulty = predict_next(
@@ -96,3 +106,52 @@ class SubmitAnswerView(APIView):
             ],
             "question_id": next_question.id
         })
+    
+
+
+
+class ResultsDashboardView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        sessions = AssessmentSession.objects.filter(
+            user=request.user,
+            is_completed=True
+        )
+
+        data = []
+
+        for session in sessions:
+
+            if session.total_marks == 0:
+                continue
+
+            percentage = 0
+
+            if session.total_marks > 0:
+
+                percentage = (
+                    session.score / session.total_marks
+                ) * 100
+
+            data.append({
+
+                "session_id": session.id,
+
+                "assignment": session.assignment.title,
+
+                "topic": session.assignment.topic.name,
+
+                "score": session.score,
+
+                "total_marks": session.total_marks,
+
+                "questions_attempted": session.question_number,
+
+                "percentage": round(percentage, 2),
+
+            })
+
+        return Response(data)

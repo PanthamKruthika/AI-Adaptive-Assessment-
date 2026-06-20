@@ -18,5 +18,7 @@ urlpatterns = [
 
     #Assessment
     path('start/', AssessmentView.StartAssessmentView.as_view() ),
-    path('submit/', AssessmentView.SubmitAnswerView.as_view())
+    path('submit/', AssessmentView.SubmitAnswerView.as_view()),
+    path('dashboard/results/', AssessmentView.ResultsDashboardView.as_view()),
+
 ]

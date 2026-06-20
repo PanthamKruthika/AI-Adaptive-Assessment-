@@ -26,6 +26,7 @@ class AssessmentSession(models.Model):
     is_completed = models.BooleanField(default=False)
 
     asked_questions = models.ManyToManyField('questions.Question', blank=True)
+    total_marks = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.user} - {self.assignment}"
 
