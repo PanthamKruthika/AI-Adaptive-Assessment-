@@ -13,3 +13,4 @@ helping both students and educators track progress effectively. With seamless in
 frontend, backend, and ML components, the system ensures efficient data handling, real-time
 processing, and scalability. Overall, the system aims to modernize traditional assessments by
 introducing a personalized, data-driven approach that improves learning outcomes.
+<img width="1463" height="831" alt="image" src="https://github.com/user-attachments/assets/facd3b8d-3d98-495f-9cc2-41f368545f1a" />
